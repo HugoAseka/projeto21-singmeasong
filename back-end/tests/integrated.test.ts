@@ -118,11 +118,16 @@ describe("tests GET /recommendations/random", () => {
   });
 });
 
-
 describe("tests GET /recommendations/top/:amount", () => {
-    it("returns ", async () => {
-        const amount = 4;
-        const result = await api.get(`/recommendations/top/${amount}`);
-        console.log(result.status, result.body)
-    })
-})
+  it("returns n amount of songs in decreasing order by score ", async () => {
+    const amount = 7;
+    await recommendationsFactory.insertMany(amount);
+    const result = await api.get(`/recommendations/top/${amount}`);
+    expect(result.body.length).toEqual(amount);
+    for (let i = 0; i < amount - 1; i++) {
+      expect(result.body[i].score).toBeGreaterThanOrEqual(
+        result.body[i + 1].score
+      );
+    }
+  });
+});
