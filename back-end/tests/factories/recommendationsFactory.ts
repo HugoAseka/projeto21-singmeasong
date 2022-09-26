@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { Recommendation } from "@prisma/client";
 import { prisma } from "../../src/database";
 
 type TypeRecommendation = {
@@ -10,6 +11,15 @@ export async function validRecommendation(): Promise<TypeRecommendation> {
   return {
     name: faker.lorem.words(5),
     youtubeLink: "https://www.youtube.com/watch?v=y1dbbrfekAM",
+  };
+}
+
+export async function recommendationData(): Promise<Recommendation> {
+  return {
+    id: Number(faker.finance.amount(1, 100, 0)),
+    name: faker.lorem.words(10),
+    youtubeLink: "https://www.youtube.com/watch?v=chwyjJbcs1Y",
+    score: 0,
   };
 }
 
@@ -36,7 +46,7 @@ export async function generateMany(amount: number) {
     data.push({
       name: `name ${i}`,
       youtubeLink: "https://www.youtube.com/watch?v=y1dbbrfekAM",
-      score: Math.floor(Math.random() * 100),
+      score: Math.floor(Math.random() * 200),
     });
   }
   return data;

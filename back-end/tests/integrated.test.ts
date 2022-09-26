@@ -116,6 +116,13 @@ describe("tests GET /recommendations/random", () => {
   it("returns 404 if there's no songs in database", async () => {
     await api.get("/recommendations/random").expect(404);
   });
+  it("returns object in the right format for success", async () => {
+    const createdRecommendation = await recommendationsFactory.insertIntoDatabase();
+
+    const result = await api.get("/recommendations/random");
+
+    expect(result.body).toMatchObject(createdRecommendation);
+});
 });
 
 describe("tests GET /recommendations/top/:amount", () => {
